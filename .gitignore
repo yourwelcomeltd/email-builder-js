@@ -11,3 +11,8 @@ yarn-debug.log*
 yarn-error.log*
 
 dist
+
+*.d.ts
+*.map
+*.js
+/build.bat

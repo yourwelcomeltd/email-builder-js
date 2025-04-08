@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "target": "es2015",
-    "module": "esnext",
+    "module": "nodenext",
     "lib": [],
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "jsx": "react",
     "strict": true,
     "sourceMap": true,
