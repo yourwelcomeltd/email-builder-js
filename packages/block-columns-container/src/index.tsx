@@ -83,7 +83,9 @@ export function ColumnsContainer({ style, columns, props }: ColumnsContainerProp
       <tbody>
         {padding[0] && (
           <tr>
-            <td colSpan={3} style={{ height: padding[0] }}></td>
+            {padding[3] && <td style={{ width: padding[3] }}></td>}
+            <td style={{ height: padding[0] }}></td>
+            {padding[1] && <td style={{ width: padding[1] }}></td>}
           </tr>
         )}
         <tr>
