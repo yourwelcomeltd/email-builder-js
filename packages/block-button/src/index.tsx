@@ -170,6 +170,7 @@ export function Button({ style, props }: ButtonProps) {
                   backgroundColor: buttonBackgroundColor,
                   borderRadius: getRoundedCorners(props),
                   display: fullWidth ? 'block' : 'inline-block',
+                  padding: `${buttonPadding[0]}px ${buttonPadding[1]}px`,
                   textDecoration: 'none',
                 }}
                 target="_blank"
