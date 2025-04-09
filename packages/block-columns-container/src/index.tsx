@@ -61,7 +61,6 @@ const ColumnsContainerPropsDefaults = {
 export function ColumnsContainer({ style, columns, props }: ColumnsContainerProps) {
   const wStyle: CSSProperties = {
     backgroundColor: style?.backgroundColor ?? undefined,
-    padding: getPadding(style?.padding),
   };
 
   const blockProps = {
@@ -71,24 +70,52 @@ export function ColumnsContainer({ style, columns, props }: ColumnsContainerProp
     fixedWidths: props?.fixedWidths,
   };
 
+  const padding = style?.padding ? getPadding(style.padding)!.split(' ') : [];
+
   return (
-    <div style={wStyle}>
-      <table
-        align="center"
-        width="100%"
-        cellPadding="0"
-        border={0}
-        style={{ tableLayout: 'fixed', borderCollapse: 'collapse' }}
-      >
-        <tbody style={{ width: '100%' }}>
-          <tr style={{ width: '100%' }}>
-            <TableCell index={0} props={blockProps} columns={columns} />
-            <TableCell index={1} props={blockProps} columns={columns} />
-            <TableCell index={2} props={blockProps} columns={columns} />
+    <table
+      align="center"
+      width="100%"
+      cellPadding="0"
+      border={0}
+      style={{ tableLayout: 'fixed', borderCollapse: 'collapse', width: '100%' }}
+    >
+      <tbody>
+        {padding[0] && (
+          <tr>
+            <td colSpan={3} style={{ height: padding[0] }}></td>
           </tr>
-        </tbody>
-      </table>
-    </div>
+        )}
+        <tr>
+          {padding[3] && <td style={{ width: padding[3] }}></td>}
+          <td style={{ width: '100%' }}>
+            <div style={wStyle}>
+              <table
+                align="center"
+                width="100%"
+                cellPadding="0"
+                border={0}
+                style={{ tableLayout: 'fixed', borderCollapse: 'collapse' }}
+              >
+                <tbody style={{ width: '100%' }}>
+                  <tr style={{ width: '100%' }}>
+                    <TableCell index={0} props={blockProps} columns={columns} />
+                    <TableCell index={1} props={blockProps} columns={columns} />
+                    <TableCell index={2} props={blockProps} columns={columns} />
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </td>
+          {padding[1] && <td style={{ width: padding[1] }}></td>}
+        </tr>
+        {padding[2] && (
+          <tr>
+            <td colSpan={3} style={{ height: padding[2] }}></td>
+          </tr>
+        )}
+      </tbody>
+    </table>
   );
 }
 

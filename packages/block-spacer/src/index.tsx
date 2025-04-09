@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react';
+import React from 'react';
 import { z } from 'zod';
 
 export const SpacerPropsSchema = z.object({
@@ -17,8 +17,21 @@ export const SpacerPropsDefaults = {
 };
 
 export function Spacer({ props }: SpacerProps) {
-  const style: CSSProperties = {
-    height: props?.height ?? SpacerPropsDefaults.height,
-  };
-  return <div style={style} />;
+  const height = props?.height ?? SpacerPropsDefaults.height;
+
+  return (
+    <table
+      width="100%"
+      cellPadding="0"
+      cellSpacing="0"
+      border={0}
+      style={{ borderCollapse: 'collapse', width: '100%' }}
+    >
+      <tbody>
+        <tr>
+          <td colSpan={3} style={{ height }}></td>
+        </tr>
+      </tbody>
+    </table>
+  );
 }

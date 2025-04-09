@@ -60,31 +60,59 @@ export function Avatar({ style, props }: AvatarProps) {
   const alt = props?.alt ?? AvatarPropsDefaults.alt;
   const shape = props?.shape ?? AvatarPropsDefaults.shape;
 
+  const padding = style?.padding ? getPadding(style.padding)!.split(' ') : [];
+
   const sectionStyle: CSSProperties = {
     textAlign: style?.textAlign ?? undefined,
-    padding: getPadding(style?.padding),
   };
+
   return (
-    <div style={sectionStyle}>
-      <img
-        alt={alt}
-        src={imageUrl}
-        height={size}
-        width={size}
-        style={{
-          outline: 'none',
-          border: 'none',
-          textDecoration: 'none',
-          objectFit: 'cover',
-          height: size,
-          width: size,
-          maxWidth: '100%',
-          display: 'inline-block',
-          verticalAlign: 'middle',
-          textAlign: 'center',
-          borderRadius: getBorderRadius(shape, size),
-        }}
-      />
-    </div>
+    <table
+      width="100%"
+      cellPadding="0"
+      cellSpacing="0"
+      border={0}
+      style={{ borderCollapse: 'collapse', width: '100%' }}
+    >
+      <tbody>
+        {padding[0] && (
+          <tr>
+            <td colSpan={3} style={{ height: padding[0] }}></td>
+          </tr>
+        )}
+        <tr>
+          {padding[3] && <td style={{ width: padding[3] }}></td>}
+          <td>
+            <div style={sectionStyle}>
+              <img
+                alt={alt}
+                src={imageUrl}
+                height={size}
+                width={size}
+                style={{
+                  outline: 'none',
+                  border: 'none',
+                  textDecoration: 'none',
+                  objectFit: 'cover',
+                  height: size,
+                  width: size,
+                  maxWidth: '100%',
+                  display: 'inline-block',
+                  verticalAlign: 'middle',
+                  textAlign: 'center',
+                  borderRadius: getBorderRadius(shape, size),
+                }}
+              />
+            </div>
+          </td>
+          {padding[1] && <td style={{ width: padding[1] }}></td>}
+        </tr>
+        {padding[2] && (
+          <tr>
+            <td colSpan={3} style={{ height: padding[2] }}></td>
+          </tr>
+        )}
+      </tbody>
+    </table>
   );
 }

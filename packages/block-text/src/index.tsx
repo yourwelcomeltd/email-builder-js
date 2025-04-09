@@ -90,19 +90,49 @@ export const TextPropsDefaults = {
 };
 
 export function Text({ style, props }: TextProps) {
-  const wStyle: CSSProperties = {
+  const text = props?.text ?? TextPropsDefaults.text;
+  const padding = style?.padding ? getPadding(style.padding)!.split(' ') : [];
+
+  const tableStyle: CSSProperties = {
     color: style?.color ?? undefined,
     backgroundColor: style?.backgroundColor ?? undefined,
     fontSize: style?.fontSize ?? undefined,
     fontFamily: getFontFamily(style?.fontFamily),
     fontWeight: style?.fontWeight ?? undefined,
     textAlign: style?.textAlign ?? undefined,
-    padding: getPadding(style?.padding),
   };
 
-  const text = props?.text ?? TextPropsDefaults.text;
-  if (props?.markdown) {
-    return <EmailMarkdown style={wStyle} markdown={text} />;
-  }
-  return <div style={wStyle}>{text}</div>;
+  return (
+    <table
+      width="100%"
+      cellPadding="0"
+      cellSpacing="0"
+      border={0}
+      style={{ borderCollapse: 'collapse', width: '100%' }}
+    >
+      <tbody>
+        {padding[0] && (
+          <tr>
+            <td colSpan={3} style={{ height: padding[0] }}></td>
+          </tr>
+        )}
+        <tr>
+          {padding[3] && <td style={{ width: padding[3] }}></td>}
+          <td>
+            {props?.markdown ? (
+              <EmailMarkdown style={tableStyle} markdown={text} />
+            ) : (
+              <div style={tableStyle}>{text}</div>
+            )}
+          </td>
+          {padding[1] && <td style={{ width: padding[1] }}></td>}
+        </tr>
+        {padding[2] && (
+          <tr>
+            <td colSpan={3} style={{ height: padding[2] }}></td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  );
 }

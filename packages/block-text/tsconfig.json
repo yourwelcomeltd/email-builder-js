@@ -2,8 +2,8 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "target": "es2015",
-    "module": "esnext",
+    "module": "NodeNext",
     "outDir": "dist"
   },
-  "exclude": ["dist"]
+  "exclude": ["dist", "**/*.js", "**/*.d.ts"]
 }

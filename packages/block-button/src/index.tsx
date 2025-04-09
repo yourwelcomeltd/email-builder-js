@@ -133,40 +133,69 @@ export function Button({ style, props }: ButtonProps) {
   const buttonTextColor = props?.buttonTextColor ?? ButtonPropsDefaults.buttonTextColor;
   const buttonBackgroundColor = props?.buttonBackgroundColor ?? ButtonPropsDefaults.buttonBackgroundColor;
 
-  const padding = getButtonSizePadding(props);
-  const textRaise = (padding[1] * 2 * 3) / 4;
+  const padding = style?.padding ? getPadding(style.padding)!.split(' ') : [];
+  const buttonPadding = getButtonSizePadding(props);
+  const textRaise = (buttonPadding[1] * 2 * 3) / 4;
+
   const wrapperStyle: CSSProperties = {
     backgroundColor: style?.backgroundColor ?? undefined,
     textAlign: style?.textAlign ?? undefined,
-    padding: getPadding(style?.padding),
-  };
-  const linkStyle: CSSProperties = {
-    color: buttonTextColor,
-    fontSize: style?.fontSize ?? 16,
-    fontFamily: getFontFamily(style?.fontFamily),
-    fontWeight: style?.fontWeight ?? 'bold',
-    backgroundColor: buttonBackgroundColor,
-    borderRadius: getRoundedCorners(props),
-    display: fullWidth ? 'block' : 'inline-block',
-    padding: `${padding[0]}px ${padding[1]}px`,
-    textDecoration: 'none',
   };
 
   return (
-    <div style={wrapperStyle}>
-      <a href={url} style={linkStyle} target="_blank">
-        <span
-          dangerouslySetInnerHTML={{
-            __html: `<!--[if mso]><i style="letter-spacing: ${padding[1]}px;mso-font-width:-100%;mso-text-raise:${textRaise}" hidden>&nbsp;</i><![endif]-->`,
-          }}
-        />
-        <span>{text}</span>
-        <span
-          dangerouslySetInnerHTML={{
-            __html: `<!--[if mso]><i style="letter-spacing: ${padding[1]}px;mso-font-width:-100%" hidden>&nbsp;</i><![endif]-->`,
-          }}
-        />
-      </a>
-    </div>
+    <table
+      width="100%"
+      cellPadding="0"
+      cellSpacing="0"
+      border={0}
+      style={{ borderCollapse: 'collapse', width: '100%' }}
+    >
+      <tbody>
+        {padding[0] && (
+          <tr>
+            <td colSpan={3} style={{ height: padding[0] }}></td>
+          </tr>
+        )}
+        <tr>
+          {padding[3] && <td style={{ width: padding[3] }}></td>}
+          <td>
+            <div style={wrapperStyle}>
+              <a
+                href={url}
+                style={{
+                  color: buttonTextColor,
+                  fontSize: style?.fontSize ?? 16,
+                  fontFamily: getFontFamily(style?.fontFamily),
+                  fontWeight: style?.fontWeight ?? 'bold',
+                  backgroundColor: buttonBackgroundColor,
+                  borderRadius: getRoundedCorners(props),
+                  display: fullWidth ? 'block' : 'inline-block',
+                  textDecoration: 'none',
+                }}
+                target="_blank"
+              >
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: `<!--[if mso]><i style="letter-spacing: ${buttonPadding[1]}px;mso-font-width:-100%;mso-text-raise:${textRaise}" hidden>&nbsp;</i><![endif]-->`,
+                  }}
+                />
+                <span>{text}</span>
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: `<!--[if mso]><i style="letter-spacing: ${buttonPadding[1]}px;mso-font-width:-100%" hidden>&nbsp;</i><![endif]-->`,
+                  }}
+                />
+              </a>
+            </div>
+          </td>
+          {padding[1] && <td style={{ width: padding[1] }}></td>}
+        </tr>
+        {padding[2] && (
+          <tr>
+            <td colSpan={3} style={{ height: padding[2] }}></td>
+          </tr>
+        )}
+      </tbody>
+    </table>
   );
 }

@@ -45,22 +45,51 @@ export const DividerPropsDefaults = {
 };
 
 export function Divider({ style, props }: DividerProps) {
+  const padding = style?.padding ? getPadding(style.padding)!.split(' ') : [];
+
   const st: CSSProperties = {
-    padding: getPadding(style?.padding),
     backgroundColor: style?.backgroundColor ?? undefined,
   };
+
   const borderTopWidth = props?.lineHeight ?? DividerPropsDefaults.lineHeight;
   const borderTopColor = props?.lineColor ?? DividerPropsDefaults.lineColor;
+
   return (
-    <div style={st}>
-      <hr
-        style={{
-          width: '100%',
-          border: 'none',
-          borderTop: `${borderTopWidth}px solid ${borderTopColor}`,
-          margin: 0,
-        }}
-      />
-    </div>
+    <table
+      width="100%"
+      cellPadding="0"
+      cellSpacing="0"
+      border={0}
+      style={{ borderCollapse: 'collapse', width: '100%' }}
+    >
+      <tbody>
+        {padding[0] && (
+          <tr>
+            <td colSpan={3} style={{ height: padding[0] }}></td>
+          </tr>
+        )}
+        <tr>
+          {padding[3] && <td style={{ width: padding[3] }}></td>}
+          <td>
+            <div style={st}>
+              <hr
+                style={{
+                  width: '100%',
+                  border: 'none',
+                  borderTop: `${borderTopWidth}px solid ${borderTopColor}`,
+                  margin: 0,
+                }}
+              />
+            </div>
+          </td>
+          {padding[1] && <td style={{ width: padding[1] }}></td>}
+        </tr>
+        {padding[2] && (
+          <tr>
+            <td colSpan={3} style={{ height: padding[2] }}></td>
+          </tr>
+        )}
+      </tbody>
+    </table>
   );
 }

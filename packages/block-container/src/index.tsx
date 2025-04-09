@@ -45,14 +45,41 @@ function getBorder(style: ContainerProps['style']) {
 }
 
 export function Container({ style, children }: ContainerProps) {
-  const wStyle: CSSProperties = {
+  const padding = style?.padding ? getPadding(style.padding)!.split(' ') : [];
+
+  const tableStyle: CSSProperties = {
     backgroundColor: style?.backgroundColor ?? undefined,
     border: getBorder(style),
     borderRadius: style?.borderRadius ?? undefined,
-    padding: getPadding(style?.padding),
   };
-  if (!children) {
-    return <div style={wStyle} />;
-  }
-  return <div style={wStyle}>{children}</div>;
+
+  return (
+    <table
+      width="100%"
+      cellPadding="0"
+      cellSpacing="0"
+      border={0}
+      style={{ borderCollapse: 'collapse', width: '100%' }}
+    >
+      <tbody>
+        {padding[0] && (
+          <tr>
+            <td colSpan={3} style={{ height: padding[0] }}></td>
+          </tr>
+        )}
+        <tr>
+          {padding[3] && <td style={{ width: padding[3] }}></td>}
+          <td>
+            <div style={tableStyle}>{children}</div>
+          </td>
+          {padding[1] && <td style={{ width: padding[1] }}></td>}
+        </tr>
+        {padding[2] && (
+          <tr>
+            <td colSpan={3} style={{ height: padding[2] }}></td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  );
 }

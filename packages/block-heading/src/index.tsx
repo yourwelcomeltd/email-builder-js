@@ -90,6 +90,8 @@ export const HeadingPropsDefaults = {
 export function Heading({ props, style }: HeadingProps) {
   const level = props?.level ?? HeadingPropsDefaults.level;
   const text = props?.text ?? HeadingPropsDefaults.text;
+  const padding = style?.padding ? getPadding(style.padding)!.split(' ') : [];
+
   const hStyle: CSSProperties = {
     color: style?.color ?? undefined,
     backgroundColor: style?.backgroundColor ?? undefined,
@@ -98,16 +100,39 @@ export function Heading({ props, style }: HeadingProps) {
     margin: 0,
     fontFamily: getFontFamily(style?.fontFamily),
     fontSize: getFontSize(level),
-    padding: getPadding(style?.padding),
   };
-  switch (level) {
-    case 'h1':
-      return <h1 style={hStyle}>{text}</h1>;
-    case 'h2':
-      return <h2 style={hStyle}>{text}</h2>;
-    case 'h3':
-      return <h3 style={hStyle}>{text}</h3>;
-  }
+
+  return (
+    <table
+      width="100%"
+      cellPadding="0"
+      cellSpacing="0"
+      border={0}
+      style={{ borderCollapse: 'collapse', width: '100%' }}
+    >
+      <tbody>
+        {padding[0] && (
+          <tr>
+            <td colSpan={3} style={{ height: padding[0] }}></td>
+          </tr>
+        )}
+        <tr>
+          {padding[3] && <td style={{ width: padding[3] }}></td>}
+          <td>
+            {level === 'h1' && <h1 style={hStyle}>{text}</h1>}
+            {level === 'h2' && <h2 style={hStyle}>{text}</h2>}
+            {level === 'h3' && <h3 style={hStyle}>{text}</h3>}
+          </td>
+          {padding[1] && <td style={{ width: padding[1] }}></td>}
+        </tr>
+        {padding[2] && (
+          <tr>
+            <td colSpan={3} style={{ height: padding[2] }}></td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  );
 }
 
 function getFontSize(level: 'h1' | 'h2' | 'h3') {

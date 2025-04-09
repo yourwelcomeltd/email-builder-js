@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react';
+import React from 'react';
 import { z } from 'zod';
 
 const PADDING_SCHEMA = z
@@ -43,15 +43,11 @@ export const ImagePropsSchema = z.object({
 export type ImageProps = z.infer<typeof ImagePropsSchema>;
 
 export function Image({ style, props }: ImageProps) {
-  const sectionStyle: CSSProperties = {
-    padding: getPadding(style?.padding),
-    backgroundColor: style?.backgroundColor ?? undefined,
-    textAlign: style?.textAlign ?? undefined,
-  };
-
   const linkHref = props?.linkHref ?? null;
   const width = props?.width ?? undefined;
   const height = props?.height ?? undefined;
+
+  const padding = style?.padding ? getPadding(style.padding)!.split(' ') : [];
 
   const imageElement = (
     <img
@@ -72,15 +68,39 @@ export function Image({ style, props }: ImageProps) {
     />
   );
 
-  if (!linkHref) {
-    return <div style={sectionStyle}>{imageElement}</div>;
-  }
-
   return (
-    <div style={sectionStyle}>
-      <a href={linkHref} style={{ textDecoration: 'none' }} target="_blank">
-        {imageElement}
-      </a>
-    </div>
+    <table
+      width="100%"
+      cellPadding="0"
+      cellSpacing="0"
+      border={0}
+      style={{ borderCollapse: 'collapse', width: '100%' }}
+    >
+      <tbody>
+        {padding[0] && (
+          <tr>
+            <td colSpan={3} style={{ height: padding[0] }}></td>
+          </tr>
+        )}
+        <tr>
+          {padding[3] && <td style={{ width: padding[3] }}></td>}
+          <td style={{ textAlign: style?.textAlign ?? undefined }}>
+            {linkHref ? (
+              <a href={linkHref} style={{ textDecoration: 'none' }} target="_blank">
+                {imageElement}
+              </a>
+            ) : (
+              imageElement
+            )}
+          </td>
+          {padding[1] && <td style={{ width: padding[1] }}></td>}
+        </tr>
+        {padding[2] && (
+          <tr>
+            <td colSpan={3} style={{ height: padding[2] }}></td>
+          </tr>
+        )}
+      </tbody>
+    </table>
   );
 }

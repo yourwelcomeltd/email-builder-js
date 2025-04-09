@@ -83,16 +83,47 @@ export type HtmlProps = z.infer<typeof HtmlPropsSchema>;
 
 export function Html({ style, props }: HtmlProps) {
   const children = props?.contents;
+  const padding = style?.padding ? getPadding(style.padding)!.split(' ') : [];
+
   const cssStyle: CSSProperties = {
     color: style?.color ?? undefined,
     backgroundColor: style?.backgroundColor ?? undefined,
     fontFamily: getFontFamily(style?.fontFamily),
     fontSize: style?.fontSize ?? undefined,
     textAlign: style?.textAlign ?? undefined,
-    padding: getPadding(style?.padding),
   };
-  if (!children) {
-    return <div style={cssStyle} />;
-  }
-  return <div style={cssStyle} dangerouslySetInnerHTML={{ __html: children }} />;
+
+  return (
+    <table
+      width="100%"
+      cellPadding="0"
+      cellSpacing="0"
+      border={0}
+      style={{ borderCollapse: 'collapse', width: '100%' }}
+    >
+      <tbody>
+        {padding[0] && (
+          <tr>
+            <td colSpan={3} style={{ height: padding[0] }}></td>
+          </tr>
+        )}
+        <tr>
+          {padding[3] && <td style={{ width: padding[3] }}></td>}
+          <td>
+            {children ? (
+              <div style={cssStyle} dangerouslySetInnerHTML={{ __html: children }} />
+            ) : (
+              <div style={cssStyle} />
+            )}
+          </td>
+          {padding[1] && <td style={{ width: padding[1] }}></td>}
+        </tr>
+        {padding[2] && (
+          <tr>
+            <td colSpan={3} style={{ height: padding[2] }}></td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  );
 }
