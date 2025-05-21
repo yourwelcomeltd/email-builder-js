@@ -49,7 +49,7 @@ export type ImageProps = z.infer<typeof ImagePropsSchema>;
 
 export function Image({ style, props }: ImageProps) {
   const imageProvider = useContext(ImageProviderContext);
-  const [imageURL, setImageURL] = React.useState<string | null>(null);
+  const [imageURL, setImageURL] = React.useState<string | null>(props?.url || '');
   useEffect(() => {
     if (props?.url) {
       const imageID = props.url.match(/{{_images.\[(.*?)\]}}/)?.[1];
@@ -60,7 +60,7 @@ export function Image({ style, props }: ImageProps) {
             setImageURL(url);
           })
           .catch(() => {
-            setImageURL(null);
+            setImageURL(props?.url || '');
           });
       } else {
         setImageURL(props.url);
