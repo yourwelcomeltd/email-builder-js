@@ -1,5 +1,10 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { z } from 'zod';
+
+import ImageProviderContext from './ImageProviderContext';
+
+export { ImageProviderContext };
+export type { ImageProviderContextType } from './ImageProviderContext';
 
 const PADDING_SCHEMA = z
   .object({
@@ -43,6 +48,28 @@ export const ImagePropsSchema = z.object({
 export type ImageProps = z.infer<typeof ImagePropsSchema>;
 
 export function Image({ style, props }: ImageProps) {
+  const imageProvider = useContext(ImageProviderContext);
+  const [imageURL, setImageURL] = React.useState<string | null>(null);
+  useEffect(() => {
+    if (props?.url) {
+      const imageID = props.url.match(/{{_images.\[(.*?)\]}}/)?.[1];
+      if (imageProvider && imageID) {
+        imageProvider
+          .loadImage(imageID)
+          .then((url) => {
+            setImageURL(url);
+          })
+          .catch(() => {
+            setImageURL(null);
+          });
+      } else {
+        setImageURL(props.url);
+      }
+    } else {
+      setImageURL('');
+    }
+  }, [props?.url, imageProvider]);
+
   const linkHref = props?.linkHref ?? null;
   const width = props?.width ?? undefined;
   const height = props?.height ?? undefined;
@@ -52,7 +79,7 @@ export function Image({ style, props }: ImageProps) {
   const imageElement = (
     <img
       alt={props?.alt ?? ''}
-      src={props?.url ?? ''}
+      src={imageURL ?? ''}
       width={width}
       height={height}
       style={{
