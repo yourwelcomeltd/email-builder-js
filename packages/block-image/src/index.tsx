@@ -31,7 +31,10 @@ export const ImagePropsSchema = z.object({
     .object({
       width: z.number().optional().nullable(),
       height: z.number().optional().nullable(),
+      imageType: z.enum(['url', 'image', 'propertyCustomField']).optional().nullable(),
       url: z.string().optional().nullable(),
+      imageID: z.number().optional().nullable(),
+      propertyCustomFieldID: z.number().optional().nullable(),
       alt: z.string().optional().nullable(),
       linkHref: z.string().optional().nullable(),
       contentAlignment: z.enum(['top', 'middle', 'bottom']).optional().nullable(),
