@@ -12,6 +12,18 @@
     {"path": "./packages/block-spacer"},
     {"path": "./packages/block-text"},
     {"path": "./packages/document-core"},
-    {"path": "./packages/email-builder"}
+    {"path": "./packages/email-builder"},
+    {"path": "./packages/block-avatar/tsconfig.esm.json"},
+    {"path": "./packages/block-button/tsconfig.esm.json"},
+    {"path": "./packages/block-columns-container/tsconfig.esm.json"},
+    {"path": "./packages/block-container/tsconfig.esm.json"},
+    {"path": "./packages/block-divider/tsconfig.esm.json"},
+    {"path": "./packages/block-heading/tsconfig.esm.json"},
+    {"path": "./packages/block-html/tsconfig.esm.json"},
+    {"path": "./packages/block-image/tsconfig.esm.json"},
+    {"path": "./packages/block-spacer/tsconfig.esm.json"},
+    {"path": "./packages/block-text/tsconfig.esm.json"},
+    {"path": "./packages/document-core/tsconfig.esm.json"},
+    {"path": "./packages/email-builder/tsconfig.esm.json"},
   ]
 }

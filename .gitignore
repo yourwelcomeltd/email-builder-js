@@ -16,3 +16,6 @@ dist
 *.map
 *.js
 /build.bat
+
+*.tsbuildinfo
+*.tgz

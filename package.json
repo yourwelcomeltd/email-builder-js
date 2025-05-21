@@ -1,14 +1,17 @@
 {
-  "name": "@usewaypoint-monorepo",
+  "name": "@usewaypoint/monorepo",
   "version": "0.0.6",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "target": "ES2022",
+  "workspaces": [
+    "packages/*"
+  ],
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "npx tsc --build",
+    "build": "tsc --build",
     "test": "npx jest"
   },
   "author": "carlos@usewaypoint.com",

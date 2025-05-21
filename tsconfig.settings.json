@@ -11,12 +11,13 @@
     "allowJs": true,
     "esModuleInterop": true,
 
+    "composite": true,
     "skipLibCheck": true,
     "declarationMap": true,
     "declaration": true,
     "noUnusedLocals": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
   }
 }
