@@ -1,5 +1,7 @@
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, useContext } from 'react';
 import { z } from 'zod';
+
+import TranslationsContext, { TranslationsContextType } from '@usewaypoint/translations';
 
 import EmailMarkdown from './EmailMarkdown';
 
@@ -78,6 +80,10 @@ export const TextPropsSchema = z.object({
     .object({
       markdown: z.boolean().optional().nullable(),
       text: z.string().optional().nullable(),
+      translations: z.record(
+        z.string(),
+        z.string()
+      ).optional().nullable(),
     })
     .optional()
     .nullable(),
@@ -89,8 +95,21 @@ export const TextPropsDefaults = {
   text: '',
 };
 
+function getText(props: TextProps['props'], translationContext: TranslationsContextType) {
+  if (translationContext.useTranslations) {
+    if (props?.translations) {
+      const currentLanguage = translationContext.getCurrentLanguage();
+      return props.translations[currentLanguage] ?? TextPropsDefaults.text;
+    }
+    return TextPropsDefaults.text;
+  }
+
+  return props?.text ?? TextPropsDefaults.text;
+}
+
 export function Text({ style, props }: TextProps) {
-  const text = props?.text ?? TextPropsDefaults.text;
+  const translationContext = useContext(TranslationsContext);
+  const text = getText(props, translationContext);
   const padding = style?.padding ? getPadding(style.padding)!.split(' ') : [];
 
   const tableStyle: CSSProperties = {

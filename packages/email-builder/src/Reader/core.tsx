@@ -15,6 +15,8 @@ import {
   buildBlockConfigurationSchema,
 } from '@usewaypoint/document-core';
 
+import { ArticleLayoutPropsSchema } from '../blocks/ArticleLayout/ArticleLayoutPropsSchema';
+import ArticleLayoutReader from '../blocks/ArticleLayout/ArticleLayoutReader';
 import ColumnsContainerPropsSchema from '../blocks/ColumnsContainer/ColumnsContainerPropsSchema';
 import ColumnsContainerReader from '../blocks/ColumnsContainer/ColumnsContainerReader';
 import { ContainerPropsSchema } from '../blocks/Container/ContainerPropsSchema';
@@ -40,6 +42,10 @@ const READER_DICTIONARY = buildBlockConfigurationDictionary({
   EmailLayout: {
     schema: EmailLayoutPropsSchema,
     Component: EmailLayoutReader,
+  },
+  ArticleLayout: {
+    schema: ArticleLayoutPropsSchema,
+    Component: ArticleLayoutReader,
   },
   //
   Avatar: {

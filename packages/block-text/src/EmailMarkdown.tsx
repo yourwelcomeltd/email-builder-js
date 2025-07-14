@@ -1,6 +1,8 @@
 import insane, { AllowedTags } from 'insane';
 import { marked, Renderer } from 'marked';
-import React, { CSSProperties, useMemo } from 'react';
+import React, { CSSProperties, useContext, useEffect, useMemo } from 'react';
+
+import { ImageProviderContext } from '@usewaypoint/block-image';
 
 const ALLOWED_TAGS: AllowedTags[] = [
   'a',
@@ -82,6 +84,15 @@ ${body}</tbody>
     }
     return `<a href="${href}" title="${title}" target="_blank">${text}</a>`;
   }
+
+  image(href: string, title: string | null, text: string) {
+    let out = `<img src="${href}" alt="${text}"`;
+    if (title) {
+      out += ` title="${title}"`;
+    }
+    out += '>';
+    return out;
+  }
 }
 
 function renderMarkdownString(str: string): string {
@@ -104,6 +115,74 @@ type Props = {
   markdown: string;
 };
 export default function EmailMarkdown({ markdown, ...props }: Props) {
-  const data = useMemo(() => renderMarkdownString(markdown), [markdown]);
-  return <div {...props} dangerouslySetInnerHTML={{ __html: data }} />;
+  const imageProvider = useContext(ImageProviderContext);
+  const [imageURLCache, setImageURLCache] = React.useState<Map<string, string>>(new Map());
+  const [loadingImageIDs, setLoadingImageIDs] = React.useState<Set<string>>(new Set());
+  useEffect(() => {
+    if (markdown && imageProvider) {
+      const matches = [...markdown.matchAll(/{{_images.\[(.*?)\]}}/g)];
+      if (imageProvider && matches) {
+        for (const match of matches) {
+          const imageID = match[1];
+          if (imageURLCache.has(imageID) || loadingImageIDs.has(imageID)) {
+            continue; // Skip if already cached
+          }
+
+          setLoadingImageIDs((prev) => new Set(prev).add(imageID));
+          imageProvider
+            .loadImage(imageID)
+            .then((url) => {
+              setLoadingImageIDs((prev) => {
+                const newSet = new Set(prev);
+                newSet.delete(imageID);
+                return newSet;
+              });
+              setImageURLCache((prev) => new Map(prev).set(imageID, url));
+            })
+            .catch(() => {
+              setLoadingImageIDs((prev) => {
+                const newSet = new Set(prev);
+                newSet.delete(imageID);
+                return newSet;
+              });
+              setImageURLCache((prev) => new Map(prev).set(imageID, ''));
+            });
+        }
+      }
+
+      // Clean up cache for images not in markdown
+      const currentImageIDs = new Set(matches.map((match) => match[1]));
+      if (!Array.from(imageURLCache.keys()).every((key) => currentImageIDs.has(key))) {
+        // If there are images in the cache that are not in the current markdown,
+        // remove them from the cache
+        setImageURLCache((prev) => {
+          const newCache = new Map(prev);
+          for (const [key] of newCache) {
+            if (!currentImageIDs.has(key)) {
+              newCache.delete(key);
+            }
+          }
+          return newCache;
+        });
+      }
+    } else {
+      if (imageURLCache.size > 0) {
+        setImageURLCache(new Map());
+      }
+    }
+  }, [imageProvider, markdown, imageURLCache, loadingImageIDs]);
+
+  const processedData = useMemo(() => {
+    if (!markdown) return '';
+
+    const processedMarkdown = markdown.replace(/{{_images.\[(.*?)\]}}/g, (match, imageID) => {
+      const url = imageURLCache.get(imageID) || '';
+      return url;
+    });
+
+    const data = renderMarkdownString(processedMarkdown);
+    return data;
+  }, [markdown, imageURLCache]);
+
+  return <div {...props} dangerouslySetInnerHTML={{ __html: processedData }} />;
 }

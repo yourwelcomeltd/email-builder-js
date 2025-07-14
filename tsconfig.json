@@ -1,6 +1,7 @@
 {
   "files": [],
   "references": [
+    {"path": "./packages/translations"},
     {"path": "./packages/block-avatar"},
     {"path": "./packages/block-button"},
     {"path": "./packages/block-columns-container"},
@@ -13,6 +14,7 @@
     {"path": "./packages/block-text"},
     {"path": "./packages/document-core"},
     {"path": "./packages/email-builder"},
+    {"path": "./packages/translations/tsconfig.esm.json"},
     {"path": "./packages/block-avatar/tsconfig.esm.json"},
     {"path": "./packages/block-button/tsconfig.esm.json"},
     {"path": "./packages/block-columns-container/tsconfig.esm.json"},

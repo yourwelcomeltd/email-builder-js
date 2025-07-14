@@ -1,7 +1,7 @@
 {
-  "name": "@usewaypoint/block-text",
-  "version": "0.0.6",
-  "description": "@usewaypoint/document compatible Text component",
+  "name": "@usewaypoint/translations",
+  "version": "0.0.1",
+  "description": "Translation provider for @usewaypoint components",
   "main": "./dist/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/index.d.ts",
@@ -18,20 +18,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "carlos@usewaypoint.com",
+  "author": "andrew@yourwelcome.com",
   "license": "MIT",
   "peerDependencies": {
     "react": "^16 || ^17 || ^18",
     "zod": "^1 || ^2 || ^3"
   },
   "devDependencies": {
-    "@testing-library/react": "^14.2.1",
-    "@types/insane": "^1.0.0"
+    "@testing-library/react": "^14.2.1"
   },
   "dependencies": {
-    "@usewaypoint/block-image": "^0.0.5",
-    "@usewaypoint/translations": "^0.0.1",
-    "insane": "^2.6.2",
-    "marked": "^12.0.2"
   }
 }
