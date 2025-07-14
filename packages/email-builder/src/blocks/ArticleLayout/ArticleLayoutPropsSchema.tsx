@@ -8,6 +8,7 @@ const COLOR_SCHEMA = z
 
 const FONT_FAMILY_SCHEMA = z
   .enum([
+    'inherit',
     'MODERN_SANS',
     'BOOK_SANS',
     'ORGANIC_SANS',

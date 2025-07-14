@@ -5,6 +5,10 @@ import { ReaderBlock } from '../../Reader/core';
 import { EmailLayoutProps } from './EmailLayoutPropsSchema';
 
 function getFontFamily(fontFamily: EmailLayoutProps['fontFamily']) {
+  if (!fontFamily || fontFamily === 'inherit') {
+    return 'inherit';
+  }
+  
   const f = fontFamily ?? 'MODERN_SANS';
   switch (f) {
     case 'MODERN_SANS':

@@ -5,6 +5,10 @@ import { ReaderBlock } from '../../Reader/core';
 import { ArticleLayoutProps } from './ArticleLayoutPropsSchema';
 
 function getFontFamily(fontFamily: ArticleLayoutProps['fontFamily']) {
+  if (!fontFamily || fontFamily === 'inherit') {
+    return 'inherit';
+  }
+
   const f = fontFamily ?? 'MODERN_SANS';
   switch (f) {
     case 'MODERN_SANS':
@@ -40,15 +44,11 @@ export default function ArticleLayoutReader(props: ArticleLayoutProps) {
   return (
     <div
       style={{
-        backgroundColor: props.backdropColor ?? '#F5F5F5',
-        color: props.textColor ?? '#262626',
+        backgroundColor: props.backdropColor ?? undefined,
+        color: props.textColor ?? undefined,
         fontFamily: getFontFamily(props.fontFamily),
-        fontSize: '16px',
-        fontWeight: '400',
-        letterSpacing: '0.15008px',
-        lineHeight: '1.5',
         margin: '0',
-        padding: '32px 0',
+        padding: '0',
         minHeight: '100%',
         width: '100%',
       }}
