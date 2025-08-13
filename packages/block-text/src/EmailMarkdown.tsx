@@ -176,7 +176,7 @@ export default function EmailMarkdown({ markdown, ...props }: Props) {
     if (!markdown) return '';
 
     const processedMarkdown = markdown.replace(/{{_images.\[(.*?)\]}}/g, (match, imageID) => {
-      const url = imageURLCache.get(imageID) || '';
+      const url = imageURLCache.get(imageID) || `ywimage://${imageID}`;
       return url;
     });
 
